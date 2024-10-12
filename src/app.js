@@ -3,20 +3,52 @@ const connectDB = require("./db")
 const app = express();
 const User = require("./models/user");
 
-app.get("/user", (req, res, next) => {
-    throw new Error("Something wrong");
+app.use(express.json())
+
+// Get user by email
+app.get("/user", async (req, res, next) => {
+    const email = req.body.email;
+    try {
+        const user = await User.find({ email: email});
+        res.send(user);
+    } catch(err) {
+        res.status(404).send("Something went wrong !");
+    }
+})
+
+// Get all Users
+app.get("/users", async (req, res, next) => {
+    try {
+        const users = await User.find({});
+        res.send(users);
+    } catch(err) {
+        res.status(404).send("Couldn't fetch the users !")
+    }
+})
+
+// Delete a user
+app.delete("/user", async (req, res) => {
+    try {
+        await User.deleteOne({ email: req.body.email});
+        res.send("Successfully deleted user !")
+    } catch (err) {
+        res.send("Unable to delete user !")
+    }
+})
+
+// Update an user
+app.patch("/user", async (req, res) => {
+    try {
+        await User.findOneAndUpdate({email: req.body.email}, {firstName: "Dhoni mamae"});
+        res.send("Updated successfully !");
+    } catch(err) {
+        res.status(404).send("Not working !")
+    }
 })
 
 app.post("/signup", async (req, res, next) => {
-    const userObj = {
-        firstName: "Virat",
-        lastNAme: "Kohli",
-        email: "vkohli@gmail.com",
-        password: "ferfdscv"
-    }
-
     try {
-        const user = new User(userObj);
+        const user = new User(req.body);
         await user.save();
         res.send("User added successfully !!")
     } catch(err) {
