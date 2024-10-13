@@ -2,6 +2,7 @@ const express = require("express");
 const connectDB = require("./db")
 const app = express();
 const User = require("./models/user");
+const bcrypt = require("bcrypt");
 
 app.use(express.json())
 
@@ -48,7 +49,15 @@ app.patch("/user", async (req, res) => {
 
 app.post("/signup", async (req, res, next) => {
     try {
-        const user = new User(req.body);
+        const {firstName, lastName, email, password} = req.body;
+
+        const pwd = await bcrypt.hash(password, 10);
+        const user = new User({
+            firstName,
+            lastName,
+            email,
+            password: pwd
+        })
         await user.save();
         res.send("User added successfully !!")
     } catch(err) {
