@@ -19,3 +19,4 @@ bcrypt to encrypt, decrypt password
 Logical query in mongo db
 how to add methods in schema like jwt
 how to validate api request details in api
+ref, populate and thought process 
