@@ -12,6 +12,7 @@ router.post("/login", async (req, res) => {
         const user = await User.findOne({email: email});
 
         if (!user) {
+            console.log("No user found")
             throw new Error("No email found !");
         }
 
@@ -20,7 +21,7 @@ router.post("/login", async (req, res) => {
         if (isPasswordValid) {
             const token = await jwt.sign({_id: user._id}, "NandhanMamae");
             res.cookie("token", token);
-            res.send("Login successful !");
+            res.send(user);
         } else {
             throw new Error("Credentials not valid !")
         }

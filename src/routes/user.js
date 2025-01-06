@@ -41,7 +41,7 @@ router.get("/user/connections", UserAuthentication, async(req, res) => {
 
 router.get("/user/feed", UserAuthentication, async (req, res) => {
     const loggedInUserId = req.user._id;
-
+    console.log(loggedInUserId);
     try {
         const data = await connectionRequest.find({
             $or: [

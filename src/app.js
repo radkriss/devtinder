@@ -1,6 +1,11 @@
 const express = require("express");
 const connectDB = require("./db")
 const app = express();
+const cors = require("cors");
+app.use(cors({
+    origin: "http:localhost:5174",
+    credentials: true
+}));
 // const { OpenAI, OpenAIApi} = require("openai");
 
 // const openai = new OpenAI({
